@@ -1,0 +1,31 @@
+{
+  "name": "caching",
+  "version": "1.0.0",
+  "description": "REST API Server for CacheCheats app",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Kaj Lund",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "knex": "^2.5.1",
+    "pg": "^8.11.2",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.1"
+  }
+}
