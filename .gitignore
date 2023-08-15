@@ -1,3 +1,5 @@
 .env
 node_modules/
 scripts/
+src/db/seeds/*.json
+src/db/seeds/users.js
