@@ -10,6 +10,24 @@ class AppError extends Error {
   }
 }
 
+class NotFoundError extends AppError {
+  constructor(detail = '') {
+    const message = reasonPhrases.NOT_FOUND
+    const status = statusCodes.NOT_FOUND
+    super(message, status, detail)
+  }
+}
+
+class InternalServerError extends AppError {
+  constructor(detail = '') {
+    const message = reasonPhrases.INTERNAL_SERVER_ERROR
+    const status = statusCodes.INTERNAL_SERVER_ERROR
+    super(message, status, detail)
+  }
+}
+
 module.exports = {
   AppError,
+  InternalServerError,
+  NotFoundError,
 }
