@@ -1,11 +1,15 @@
+/*
+ * Place routes controllers
+ */
+
 const svcPlace = require('./place.service')
 const { statusCodes } = require('../../utils/statuscodes')
 
 class PlaceController {
-  async getAllPlaces(req, res, next) {
+  async gePlaces(req, res, next) {
     try {
-      const places = await svcPlace.getPlacesList()
-      res.status(statusCodes.OK).json({ success: true, data: { places } })
+      const places = await svcPlace.listPlaces()
+      res.status(statusCodes.OK).json({ success: true, msg: `Found ${places.length} places`, data: { places } })
     } catch (err) {
       next(err)
     }
@@ -13,8 +17,8 @@ class PlaceController {
 
   async getPlaceById(req, res, next) {
     try {
-      const place = await svcPlace.getPlaceById(req.params.id)
-      res.status(statusCodes.CREATED).json({ success: true, data: { place } })
+      const place = await svcPlace.findPlaceById(req.params.id)
+      res.status(statusCodes.CREATED).json({ success: true, msg: `Found place ${place.nameSv}`, data: { place } })
     } catch (err) {
       next(err)
     }
