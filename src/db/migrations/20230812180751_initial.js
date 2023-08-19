@@ -43,6 +43,7 @@ exports.up = async function (knex) {
     table.boolean('verified').notNullable().defaultTo(false)
     table.string('place_id').defaultTo('')
     table.string('user_id').defaultTo('')
+    table.datetime('deleted_at', { precision: 6 }).nullable().defaultTo(null)
     table.timestamps(true, true)
   })
 
