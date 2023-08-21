@@ -1,9 +1,13 @@
 /*
- * Places services layer
+ * Places services
  */
 
-const placeDAL = require('./place.dal')
 const { InternalServerError, NotFoundError } = require('../../utils/errors')
+const DAO = require('../../db/dao')
+const repoPlace = require('./place.repository')
+
+const daoPlace = new DAO('places')
+const defaultOrder = [{ column: 'name_sv', order: 'asc' }]
 
 const dataToPlaceData = (data) => {
   const { code, nameFi, nameSv, provinceFi, provinceSv } = data
@@ -17,50 +21,81 @@ const dataToPlaceData = (data) => {
 }
 
 class PlaceService {
-  async listPlaces() {
-    const places = await placeDAL.getList()
-    return places
+  async listPlaces(filter = {}, sort = null, limit = 10, skip = 0) {
+    const result = await daoPlace.query(filter, sort || defaultOrder, limit, skip)
+
+    return {
+      success: true,
+      msg: `Returned ${result.length} places`,
+      filter,
+      limit,
+      skip,
+      count: result.length,
+      data: [...result],
+    }
   }
 
   async findPlaceById(id) {
-    const place = await placeDAL.findByID(id)
-    if (!place) throw new NotFoundError(`A place with id ${id} was not found`)
-    return place
+    const found = await daoPlace.findByID(id)
+    if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
+
+    return {
+      success: true,
+      msg: `Found place ${found.name_sv}`,
+      data: found,
+    }
   }
 
   async findPlaces(search) {
     // Find places based on search
-    const places = await placeDAL.find(search)
-    return places
+    const result = await repoPlace.searchPlace(search)
+
+    return {
+      success: true,
+      msg: `Found ${result.length} places on search: ${search}`,
+      search,
+      count: result.length,
+      data: [...result],
+    }
   }
 
   async createPlace(postData) {
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Create place
-    const place = await placeDAL.create(placeData)
+    const [place] = await daoPlace.create(placeData)
     return place
   }
 
   async updatePlace(id, postData) {
     // Verify place exists
-    const place = await placeDAL.findByID(id)
-    if (!place) throw new NotFoundError(`A place with id ${id} was not found`)
+    const found = await daoPlace.findByID(id)
+    if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Update place
-    const updated = await placeDAL.update(id, placeData)
-    return updated
+    const result = await daoPlace.update(id, placeData)
+
+    return {
+      success: true,
+      msg: `Updated place ${result.name_sv}`,
+      data: result,
+    }
   }
 
   async deletePlace(id) {
     // Ensure it exists
-    const place = await placeDAL.findByID(id)
-    if (!place) throw new NotFoundError(`A place with id ${id} was not found`)
+    const found = await daoPlace.findByID(id)
+    if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Delete place
-    const result = await placeDAL.deleteOne(id)
-    if (!result.length) throw new InternalServerError(`Place with id ${id} could not be deleted`)
-    return result[0]
+    const result = await daoPlace.deleteOne(id)
+    if (!result) throw new InternalServerError(`Place with id ${id} could not be deleted`)
+
+    return {
+      success: true,
+      msg: `Deleted cachetype ${result.name_sv}`,
+      data: result,
+    }
   }
 }
 

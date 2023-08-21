@@ -1,15 +1,19 @@
 /*
- * Place routes controllers
+ * Places route controllers
  */
 
-const svcPlace = require('./place.service')
 const { statusCodes } = require('../../utils/statuscodes')
+const svcPlace = require('./place.service')
 
 class PlaceController {
-  async gePlaces(req, res, next) {
+  async listPlaces(req, res, next) {
+    const filter = {}
+    const sort = null
+    const limit = req.query.limit || 50
+    const skip = req.query.skip || 0
     try {
-      const places = await svcPlace.listPlaces()
-      res.status(statusCodes.OK).json({ success: true, msg: `Found ${places.length} places`, data: { places } })
+      const result = await svcPlace.listPlaces(filter, sort, limit, skip)
+      res.status(statusCodes.OK).json(result)
     } catch (err) {
       next(err)
     }
@@ -17,8 +21,8 @@ class PlaceController {
 
   async getPlaceById(req, res, next) {
     try {
-      const place = await svcPlace.findPlaceById(req.params.id)
-      res.status(statusCodes.CREATED).json({ success: true, msg: `Found place ${place.nameSv}`, data: { place } })
+      const result = await svcPlace.getPlaceById(req.params.id)
+      res.status(statusCodes.CREATED).json(result)
     } catch (err) {
       next(err)
     }
@@ -26,10 +30,8 @@ class PlaceController {
 
   async findPlaces(req, res, next) {
     try {
-      const places = await svcPlace.findPlaces(req.query.search)
-      res
-        .status(statusCodes.OK)
-        .json({ success: true, msg: `Found ${places.length} places on search ${req.query.search}`, data: { places } })
+      const result = await svcPlace.findPlaces(req.query.search)
+      res.status(statusCodes.OK).json(result)
     } catch (err) {
       next(err)
     }
@@ -37,8 +39,8 @@ class PlaceController {
 
   async createPlace(req, res, next) {
     try {
-      const place = await svcPlace.createPlace(req.body)
-      res.status(statusCodes.CREATED).json({ success: true, data: { place } })
+      const result = await svcPlace.createPlace(req.body)
+      res.status(statusCodes.CREATED).json(result)
     } catch (err) {
       next(err)
     }
@@ -46,16 +48,17 @@ class PlaceController {
 
   async updatePlace(req, res, next) {
     try {
-      const place = await svcPlace.updatePlace(req.params.id, req.body)
-      res.status(statusCodes.OK).json({ success: true, data: { place } })
+      const result = await svcPlace.updatePlace(req.params.id, req.body)
+      res.status(statusCodes.OK).json(result)
     } catch (err) {
       next(err)
     }
   }
+
   async deletePlace(req, res, next) {
     try {
-      const place = await svcPlace.deletePlace(req.params.id)
-      res.status(statusCodes.OK).json({ success: true, msg: `Deleted place ${place.name_fi}`, data: { place } })
+      const result = await svcPlace.deletePlace(req.params.id)
+      res.status(statusCodes.OK).json(result)
     } catch (err) {
       next(err)
     }
