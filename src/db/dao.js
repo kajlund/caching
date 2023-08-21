@@ -16,7 +16,8 @@ class DAO {
     return result.length ? result[0] : null
   }
 
-  async query(filter = {}, sort = [], limit = 50, skip = 0) {
+  async query(query) {
+    const { filter, sort, limit, skip } = query
     const result = await db(this.tableName).where(filter).orderBy(sort).limit(limit).offset(skip)
     return result
   }

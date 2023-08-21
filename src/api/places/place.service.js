@@ -7,7 +7,6 @@ const DAO = require('../../db/dao')
 const repoPlace = require('./place.repository')
 
 const daoPlace = new DAO('places')
-const defaultOrder = [{ column: 'name_sv', order: 'asc' }]
 
 const dataToPlaceData = (data) => {
   const { code, nameFi, nameSv, provinceFi, provinceSv } = data
@@ -21,15 +20,20 @@ const dataToPlaceData = (data) => {
 }
 
 class PlaceService {
-  async listPlaces(filter = {}, sort = null, limit = 10, skip = 0) {
-    const result = await daoPlace.query(filter, sort || defaultOrder, limit, skip)
+  async listPlaces(query) {
+    query = query || {}
+    const qry = {
+      filter: query.filter || {},
+      sort: query.sort || [{ column: 'name_sv', order: 'asc' }],
+      limit: query.limit || 10,
+      skip: query.skip || 0,
+    }
+    const result = await daoPlace.query(qry)
 
     return {
       success: true,
       msg: `Returned ${result.length} places`,
-      filter,
-      limit,
-      skip,
+      query: qry,
       count: result.length,
       data: [...result],
     }

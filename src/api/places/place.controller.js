@@ -7,12 +7,8 @@ const svcPlace = require('./place.service')
 
 class PlaceController {
   async listPlaces(req, res, next) {
-    const filter = {}
-    const sort = null
-    const limit = req.query.limit || 50
-    const skip = req.query.skip || 0
     try {
-      const result = await svcPlace.listPlaces(filter, sort, limit, skip)
+      const result = await svcPlace.listPlaces(req.query)
       res.status(statusCodes.OK).json(result)
     } catch (err) {
       next(err)
