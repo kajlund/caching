@@ -16,7 +16,7 @@ const BaseService = require('../../utils/base.service')
 // }
 
 class PlaceService extends BaseService {
-  async findPlaces(search) {
+  async findPlacesByName(search) {
     // Find places based on search
     const result = await this.repo.searchPlace(search)
 

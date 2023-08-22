@@ -1,3 +1,8 @@
+/*
+ * Base service class
+ * Implements reusable standard CRUD functionality
+ */
+
 const { InternalServerError, NotFoundError } = require('./errors')
 
 class BaseService {
