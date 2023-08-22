@@ -4,9 +4,7 @@
 
 const { InternalServerError, NotFoundError } = require('../../utils/errors')
 const BaseService = require('../../utils/baseservice')
-const PlaceRepository = require('./place.repository')
-
-const repoPlace = new PlaceRepository('places')
+const repo = require('./place.repository')
 
 const dataToPlaceData = (data) => {
   const { code, nameFi, nameSv, provinceFi, provinceSv } = data
@@ -22,7 +20,7 @@ const dataToPlaceData = (data) => {
 class PlaceService extends BaseService {
   async listPlaces(query) {
     const qry = this.parseQuery(query)
-    const result = await repoPlace.query(qry)
+    const result = await this.repo.query(qry)
 
     return {
       success: true,
@@ -34,7 +32,7 @@ class PlaceService extends BaseService {
   }
 
   async getPlaceById(id) {
-    const found = await repoPlace.findByID(id)
+    const found = await this.repo.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
 
     return {
@@ -46,7 +44,7 @@ class PlaceService extends BaseService {
 
   async findPlaces(search) {
     // Find places based on search
-    const result = await repoPlace.searchPlace(search)
+    const result = await this.repo.searchPlace(search)
 
     return {
       success: true,
@@ -61,7 +59,7 @@ class PlaceService extends BaseService {
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Create place
-    const result = await repoPlace.createOne(placeData)
+    const result = await this.repo.createOne(placeData)
 
     return {
       success: true,
@@ -72,12 +70,12 @@ class PlaceService extends BaseService {
 
   async updatePlace(id, postData) {
     // Verify place exists
-    const found = await repoPlace.findByID(id)
+    const found = await this.repo.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Update place
-    const result = await repoPlace.updateOne(id, placeData)
+    const result = await this.repo.updateOne(id, placeData)
 
     return {
       success: true,
@@ -88,10 +86,10 @@ class PlaceService extends BaseService {
 
   async deletePlace(id) {
     // Ensure it exists
-    const found = await repoPlace.findByID(id)
+    const found = await this.repo.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Delete place
-    const result = await repoPlace.deleteOne(id)
+    const result = await this.repo.deleteOne(id)
     if (!result) throw new InternalServerError(`Place with id ${id} could not be deleted`)
 
     return {
@@ -102,4 +100,4 @@ class PlaceService extends BaseService {
   }
 }
 
-module.exports = new PlaceService({}, [{ column: 'name_sv', order: 'asc' }], 100, 0)
+module.exports = new PlaceService(repo)

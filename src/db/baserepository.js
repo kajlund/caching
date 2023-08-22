@@ -5,7 +5,15 @@
 const db = require('./')
 
 class BaseRepository {
-  constructor(table) {
+  constructor(config) {
+    const { table, filter, sort, limit, skip } = config
+    this.defaultQuery = {
+      filter: filter || {},
+      sort: sort || [],
+      limit: limit || 50,
+      skip: skip || 0,
+    }
+
     this.db = db
     this.table = table
   }

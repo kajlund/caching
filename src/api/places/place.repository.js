@@ -4,6 +4,8 @@
 
 const BaseRepository = require('../../db/baserepository')
 
+const config = { table: 'places', filter: {}, sort: [{ column: 'name_sv', order: 'asc' }], limit: 25, skip: 0 }
+
 class PlaceRepository extends BaseRepository {
   async searchPlace(search) {
     const expr = search + '%'
@@ -15,5 +17,4 @@ class PlaceRepository extends BaseRepository {
     return places
   }
 }
-
-module.exports = PlaceRepository
+module.exports = new PlaceRepository(config)
