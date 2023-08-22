@@ -3,10 +3,10 @@
  */
 
 const { InternalServerError, NotFoundError } = require('../../utils/errors')
-const DAO = require('../../db/dao')
-const repoPlace = require('./place.repository')
+const BaseService = require('../../utils/baseservice')
+const PlaceRepository = require('./place.repository')
 
-const daoPlace = new DAO('places')
+const repoPlace = new PlaceRepository('places')
 
 const dataToPlaceData = (data) => {
   const { code, nameFi, nameSv, provinceFi, provinceSv } = data
@@ -19,16 +19,10 @@ const dataToPlaceData = (data) => {
   }
 }
 
-class PlaceService {
+class PlaceService extends BaseService {
   async listPlaces(query) {
-    query = query || {}
-    const qry = {
-      filter: query.filter || {},
-      sort: query.sort || [{ column: 'name_sv', order: 'asc' }],
-      limit: query.limit || 10,
-      skip: query.skip || 0,
-    }
-    const result = await daoPlace.query(qry)
+    const qry = this.parseQuery(query)
+    const result = await repoPlace.query(qry)
 
     return {
       success: true,
@@ -39,8 +33,8 @@ class PlaceService {
     }
   }
 
-  async findPlaceById(id) {
-    const found = await daoPlace.findByID(id)
+  async getPlaceById(id) {
+    const found = await repoPlace.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
 
     return {
@@ -67,18 +61,23 @@ class PlaceService {
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Create place
-    const [place] = await daoPlace.create(placeData)
-    return place
+    const result = await repoPlace.createOne(placeData)
+
+    return {
+      success: true,
+      msg: `Created place: ${result.name_sv}`,
+      data: result,
+    }
   }
 
   async updatePlace(id, postData) {
     // Verify place exists
-    const found = await daoPlace.findByID(id)
+    const found = await repoPlace.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Format posted data
     const placeData = dataToPlaceData(postData)
     // Update place
-    const result = await daoPlace.update(id, placeData)
+    const result = await repoPlace.updateOne(id, placeData)
 
     return {
       success: true,
@@ -89,10 +88,10 @@ class PlaceService {
 
   async deletePlace(id) {
     // Ensure it exists
-    const found = await daoPlace.findByID(id)
+    const found = await repoPlace.findByID(id)
     if (!found) throw new NotFoundError(`A place with id ${id} was not found`)
     // Delete place
-    const result = await daoPlace.deleteOne(id)
+    const result = await repoPlace.deleteOne(id)
     if (!result) throw new InternalServerError(`Place with id ${id} could not be deleted`)
 
     return {
@@ -103,4 +102,4 @@ class PlaceService {
   }
 }
 
-module.exports = new PlaceService()
+module.exports = new PlaceService({}, [{ column: 'name_sv', order: 'asc' }], 100, 0)

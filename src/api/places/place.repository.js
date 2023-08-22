@@ -2,12 +2,12 @@
  * Places repository. Customized data-access module
  */
 
-const db = require('../../db')
+const BaseRepository = require('../../db/baserepository')
 
-class PlaceRepository {
+class PlaceRepository extends BaseRepository {
   async searchPlace(search) {
     const expr = search + '%'
-    const places = await db('places')
+    const places = await this.db('places')
       .whereILike('name_sv', expr)
       .orWhereILike('name_fi', expr)
       .orWhereILike('province_sv', expr)
@@ -16,4 +16,4 @@ class PlaceRepository {
   }
 }
 
-module.exports = new PlaceRepository()
+module.exports = PlaceRepository
