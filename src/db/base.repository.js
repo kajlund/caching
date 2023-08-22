@@ -2,7 +2,7 @@
  * Base repository to implement shared functionality
  * TODO: Refactor out all Knex-related to a DAOKnex class
  */
-const db = require('./')
+const db = require('.')
 
 class BaseRepository {
   constructor(config) {

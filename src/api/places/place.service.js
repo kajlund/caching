@@ -2,7 +2,7 @@
  * Place services Singleton
  */
 
-const BaseService = require('../../utils/baseservice')
+const BaseService = require('../../utils/base.service')
 
 // const dataToPlaceData = (data) => {
 //   const { code, nameFi, nameSv, provinceFi, provinceSv } = data

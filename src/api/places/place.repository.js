@@ -2,7 +2,7 @@
  * Places repository. Customized data-access module
  */
 
-const BaseRepository = require('../../db/baserepository')
+const BaseRepository = require('../../db/base.repository')
 
 const config = {
   table: 'places',

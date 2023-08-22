@@ -5,10 +5,10 @@
 const express = require('express')
 const router = express.Router()
 
-const ctrlPlace = require('./place.controller')
+const ctrl = require('./place.controller')
 
-router.route('/find').get(ctrlPlace.findPlaces)
-router.route('/').get(ctrlPlace.listPlaces).post(ctrlPlace.createPlace)
-router.route('/:id').get(ctrlPlace.getPlaceById).patch(ctrlPlace.updatePlace).delete(ctrlPlace.deletePlace)
+router.route('/find').get(ctrl.findPlaces)
+router.route('/').get(ctrl.listItems).post(ctrl.createItem)
+router.route('/:id').get(ctrl.getItemById).patch(ctrl.updateItem).delete(ctrl.deleteItem)
 
 module.exports = router
