@@ -4,7 +4,14 @@
 
 const BaseRepository = require('../../db/baserepository')
 
-const config = { table: 'places', filter: {}, sort: [{ column: 'name_sv', order: 'asc' }], limit: 25, skip: 0 }
+const config = {
+  table: 'places',
+  filter: {},
+  sort: [{ column: 'name_sv', order: 'asc' }],
+  limit: 25,
+  skip: 0,
+  descField: 'name_sv',
+}
 
 class PlaceRepository extends BaseRepository {
   async searchPlace(search) {

@@ -6,7 +6,7 @@ const db = require('./')
 
 class BaseRepository {
   constructor(config) {
-    const { table, filter, sort, limit, skip } = config
+    const { table, filter, sort, limit, skip, descField } = config
     this.defaultQuery = {
       filter: filter || {},
       sort: sort || [],
@@ -16,6 +16,7 @@ class BaseRepository {
 
     this.db = db
     this.table = table
+    this.descField = descField
   }
 
   async archiveOne(id) {
