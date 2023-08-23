@@ -58,7 +58,7 @@ class BaseService {
 
     return {
       success: true,
-      msg: `Updated place ${result[this.repo.descField]}`,
+      msg: `Updated place: ${result[this.repo.descField]}`,
       data: result,
     }
   }
@@ -73,7 +73,7 @@ class BaseService {
 
     return {
       success: true,
-      msg: `Deleted item ${result[this.repo.descField]}`,
+      msg: `Deleted item: ${result[this.repo.descField]}`,
       data: result,
     }
   }
