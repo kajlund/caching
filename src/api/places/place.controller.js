@@ -4,9 +4,7 @@
 
 const { statusCodes } = require('../../utils/statuscodes')
 const BaseController = require('../../utils/base.controller')
-const PlaceService = require('./place.service')
-const repo = require('./place.repository')
-const svc = new PlaceService(repo)
+const svc = require('./place.service')
 
 class PlaceController extends BaseController {
   async findPlacesByName(req, res) {

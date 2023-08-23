@@ -3,17 +3,7 @@
  */
 
 const BaseService = require('../../utils/base.service')
-
-// const dataToPlaceData = (data) => {
-//   const { code, nameFi, nameSv, provinceFi, provinceSv } = data
-//   return {
-//     code: parseInt(code),
-//     name_fi: nameFi,
-//     name_sv: nameSv,
-//     province_fi: provinceFi,
-//     province_sv: provinceSv,
-//   }
-// }
+const repo = require('./place.repository')
 
 class PlaceService extends BaseService {
   async findPlacesByName(search) {
@@ -42,4 +32,4 @@ class PlaceService extends BaseService {
   }
 }
 
-module.exports = PlaceService
+module.exports = new PlaceService(repo)
