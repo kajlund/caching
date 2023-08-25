@@ -24,4 +24,5 @@ class PlaceRepository extends BaseRepository {
     return places
   }
 }
+
 module.exports = new PlaceRepository(config)
