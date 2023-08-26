@@ -18,7 +18,7 @@ class CacheTypeService extends BaseService {
 const repo = new BaseRepository({
   table: 'cachetypes',
   filter: {},
-  sort: [{ column: 'name', order: 'asc' }],
+  sort: ['name'],
   limit: 25,
   skip: 0,
   descField: 'name',

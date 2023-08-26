@@ -4,14 +4,31 @@
  */
 
 const { InternalServerError, NotFoundError } = require('./errors')
+const QueryParser = require('./queryparser')
 
 class BaseService {
   constructor(repo) {
     this.repo = repo
   }
 
+  _parseQuery(query) {
+    query = query || {}
+    let { filter, sort, limit, skip } = query
+    filter = filter ? QueryParser.parseFilter(filter) : this.repo.defaultQuery.filter
+    sort = sort ? QueryParser.parseSort(sort) : this.repo.defaultQuery.sort
+    limit = parseInt(limit) || this.repo.defaultQuery.limit
+    skip = parseInt(skip) || this.repo.defaultQuery.skip
+
+    return {
+      filter,
+      sort,
+      limit,
+      skip,
+    }
+  }
+
   async listItems(query) {
-    const qry = this.parseQuery(query)
+    const qry = this._parseQuery(query)
     const result = await this.repo.query(qry)
 
     return {
@@ -75,23 +92,6 @@ class BaseService {
       success: true,
       msg: `Deleted item: ${result[this.repo.descField]}`,
       data: result,
-    }
-  }
-
-  parseQuery(query) {
-    query = query || {}
-    let { filter, sort, limit, skip } = query
-    // TODO: Add proper parsing of filter and sort
-    filter = filter || this.repo.defaultQuery.filter
-    sort = sort || this.repo.defaultQuery.sort
-    limit = limit || this.repo.defaultQuery.limit
-    skip = skip || this.repo.defaultQuery.skip
-
-    return {
-      filter,
-      sort,
-      limit,
-      skip,
     }
   }
 

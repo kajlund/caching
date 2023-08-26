@@ -7,7 +7,7 @@ const BaseRepository = require('../../db/base.repository')
 const config = {
   table: 'places',
   filter: {},
-  sort: [{ column: 'name_sv', order: 'asc' }],
+  sort: ['name_sv'],
   limit: 25,
   skip: 0,
   descField: 'name_sv',
