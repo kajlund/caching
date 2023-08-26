@@ -20,7 +20,7 @@ describe('ping', () => {
   })
 })
 
-describe('Fauty routes', () => {
+describe('Faulty routes', () => {
   it('returns 404 on faulty route', async () => {
     const res = await request(app).get('/faulty')
     expect(res.statusCode).toEqual(404)
