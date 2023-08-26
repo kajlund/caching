@@ -4,5 +4,7 @@ Caching server is a REST API server for the cachecheats web app built on Express
 
 ## Testing
 
-Testing is done using [Jest](https://jestjs.io/) test runner and libs [Supertest](https://github.com/ladjs/supertest#readme) and [Jest-json-schema](https://github.com/americanexpress/jest-json-schema). More on JSON Schema [here](https://json-schema.org)
+Testing is done using the [Japa](https://japa.dev/docs) testing tool using its [Assert plugin](https://japa.dev/docs/plugins/assert) and [Supertest](https://github.com/ladjs/supertest#readme) for emulating http calls.
+
+
 
