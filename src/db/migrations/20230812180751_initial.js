@@ -7,7 +7,9 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable('users', (table) => {
     // table.increments('id')
-    table.uuid('id', { useBinaryUuid: false, primaryKey: true }).defaultTo(knex.raw('uuid_generate_v4()'))
+    table
+      .uuid('id', { useBinaryUuid: false, primaryKey: true })
+      .defaultTo(knex.raw('uuid_generate_v4()'))
     table.string('username').notNullable().defaultTo('')
     table.string('email').notNullable().unique()
     table.string('password').notNullable()
@@ -17,14 +19,18 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable('cachetypes', (table) => {
     // table.increments('id')
-    table.uuid('id', { useBinaryUuid: false, primaryKey: true }).defaultTo(knex.raw('uuid_generate_v4()'))
+    table
+      .uuid('id', { useBinaryUuid: false, primaryKey: true })
+      .defaultTo(knex.raw('uuid_generate_v4()'))
     table.string('name').notNullable().defaultTo('')
     table.timestamps(true, true)
   })
 
   await knex.schema.createTable('places', (table) => {
     // table.increments('id')
-    table.uuid('id', { useBinaryUuid: false, primaryKey: true }).defaultTo(knex.raw('uuid_generate_v4()'))
+    table
+      .uuid('id', { useBinaryUuid: false, primaryKey: true })
+      .defaultTo(knex.raw('uuid_generate_v4()'))
     table.integer('code').notNullable().unique()
     table.string('name_fi').notNullable().defaultTo('')
     table.string('name_sv').notNullable().defaultTo('')
@@ -35,7 +41,9 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable('caches', (table) => {
     // table.increments('id')
-    table.uuid('id', { useBinaryUuid: false, primaryKey: true }).defaultTo(knex.raw('uuid_generate_v4()'))
+    table
+      .uuid('id', { useBinaryUuid: false, primaryKey: true })
+      .defaultTo(knex.raw('uuid_generate_v4()'))
     table.string('gc').notNullable().unique()
     table.string('cache_type').defaultTo('')
     table.string('name').notNullable().defaultTo('')
@@ -49,7 +57,9 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable('cachecomments', (table) => {
     // table.increments('id')
-    table.uuid('id', { useBinaryUuid: false, primaryKey: true }).defaultTo(knex.raw('uuid_generate_v4()'))
+    table
+      .uuid('id', { useBinaryUuid: false, primaryKey: true })
+      .defaultTo(knex.raw('uuid_generate_v4()'))
     table.uuid('cache_id').references('id').inTable('caches').onDelete('CASCADE')
     table.uuid('user_id').references('id').inTable('users').onDelete('SET NULL')
     table.text('comment').notNullable().defaultTo('')
