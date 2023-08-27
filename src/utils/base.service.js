@@ -53,7 +53,7 @@ class BaseService {
 
   async createItem(postData) {
     // Validate posted data
-    const validate = this.validateData(postData, true)
+    const validate = await this.validateData(postData, true)
     if (!validate.isValid) throw new BadRequestError('Faulty data', validate.errors)
 
     // Create item
@@ -71,7 +71,7 @@ class BaseService {
     const found = await this.repo.findByID(id)
     if (!found) throw new NotFoundError(`Item with id: ${id} was not found`)
     // Validate posted data
-    const validate = this.validateData(postData, false)
+    const validate = await this.validateData(postData, false)
     if (!validate.isValid) throw new BadRequestError('Faulty data', validate.errors)
 
     // Update item
@@ -79,7 +79,7 @@ class BaseService {
 
     return {
       success: true,
-      msg: `Updated place: ${result[this.repo.descField]}`,
+      msg: `Updated item: ${result[this.repo.descField]}`,
       data: result,
     }
   }

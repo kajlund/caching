@@ -42,6 +42,11 @@ class BaseRepository {
     return result
   }
 
+  async findOne(qry) {
+    const result = await this.db(this.table).where(qry).first()
+    return result
+  }
+
   async query(query) {
     const { filter, sort, limit, skip } = query
     const result = await this.db(this.table).where(filter).orderBy(sort).limit(limit).offset(skip)
