@@ -74,7 +74,6 @@ exports.up = async function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function (knex) {
-  // Drop the "blog" table if it exists
   await knex.schema.dropTableIfExists('cachecomments')
   await knex.schema.dropTableIfExists('caches')
   await knex.schema.dropTableIfExists('users')

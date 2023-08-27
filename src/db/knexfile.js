@@ -19,7 +19,7 @@ module.exports = {
   test: {
     client: 'postgresql',
     connection: {
-      database: process.env.DB_NAME,
+      database: 'caching-test',
       user: process.env.DB_USER,
       password: process.env.DB_PWD,
     },
