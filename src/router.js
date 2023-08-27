@@ -64,12 +64,14 @@ class Router {
       if (err instanceof AppError) {
         error.message = err.message
         error.detail = err.detail
+        if (err.errors) error.errors = err.errors
       }
 
       return res.status(error.statusCode).json({
         success: false,
         message: error.message,
         detail: error.detail || '',
+        errors: error.errors || {},
       })
     })
   }

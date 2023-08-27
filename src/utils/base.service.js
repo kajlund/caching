@@ -3,7 +3,7 @@
  * Implements reusable standard CRUD functionality
  */
 
-const { InternalServerError, NotFoundError } = require('./errors')
+const { BadRequestError, InternalServerError, NotFoundError } = require('./errors')
 const QueryParser = require('./queryparser')
 
 class BaseService {
@@ -52,10 +52,12 @@ class BaseService {
   }
 
   async createItem(postData) {
-    // Format posted data
-    const itemData = this.validate(postData)
+    // Validate posted data
+    const validate = this.validateData(postData, true)
+    if (!validate.isValid) throw new BadRequestError('Faulty data', validate.errors)
+
     // Create item
-    const result = await this.repo.createOne(itemData)
+    const result = await this.repo.createOne(validate.data)
 
     return {
       success: true,
@@ -68,10 +70,12 @@ class BaseService {
     // Verify place exists
     const found = await this.repo.findByID(id)
     if (!found) throw new NotFoundError(`Item with id: ${id} was not found`)
-    // Format posted data
-    const itemData = this.validate(postData)
+    // Validate posted data
+    const validate = this.validateData(postData, false)
+    if (!validate.isValid) throw new BadRequestError('Faulty data', validate.errors)
+
     // Update item
-    const result = await this.repo.updateOne(id, itemData)
+    const result = await this.repo.updateOne(id, validate.data)
 
     return {
       success: true,
@@ -95,7 +99,8 @@ class BaseService {
     }
   }
 
-  validate() {
+  validateData() {
+    // Needs to be implemented in subclasses
     return {}
   }
 }
